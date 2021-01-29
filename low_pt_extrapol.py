@@ -277,7 +277,8 @@ for system, system_tmp_dict in calc_dict.items():
     hand_fit_dict={
         "AuAu_RHIC200":"fit_by_hand/AuAu200_ncteq15np_prompt_Qs40_times_1.84.dat",
         "PbPb_LHC2760":"fit_by_hand/PbPb_2760GeV_ncteq15np_prompt_Qs80_times_1.23.dat",
-        "PbPb_LHC5020":"fit_by_hand/PbPb_5020GeV_ncteq15np_prompt_Qs80_times_1.17.dat"
+        "PbPb_LHC5020":"fit_by_hand/PbPb_5020GeV_ncteq15np_prompt_Qs80_times_1.17.dat",
+        "pPb_LHC5020":"fit_by_hand/pPb_LHC_5020GeV_from_pPb_paper.dat"
     }
 
     font = {'family' : 'URW Gothic',
@@ -302,12 +303,12 @@ for system, system_tmp_dict in calc_dict.items():
     plt.plot(pT_Qs05, dNdpt_Qs05, 'rD', label="Qs=p_T/2")
 
     # Plot extrapolated
-    plt.plot(pT, dNdpt, '-', label="Extrapolated")
+    plt.plot(pT, dNdpt, '-', color='blue', label="Extrapolated")
 
     # Plot old hand-fit when available
     if system in hand_fit_dict.keys():
         pT_hand_fit, dN_hand_fit=np.loadtxt(hand_fit_dict[system]).T
-        plt.plot(pT_hand_fit, dN_hand_fit, ':', label="Older hand-fitted extrapolation")
+        plt.plot(pT_hand_fit, dN_hand_fit, ':', color='black', label="Older hand-fitted extrapolation")
 
     # Show the region between p_T=0 and p_T=4 GeV, which is apparently not the most trustworthy region of p_T for pQCD calculations
     plt.axvspan(0, 4, alpha=0.5, color='grey')
