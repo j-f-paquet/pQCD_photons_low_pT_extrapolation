@@ -278,7 +278,8 @@ for system, system_tmp_dict in calc_dict.items():
         "AuAu_RHIC200":"fit_by_hand/AuAu200_ncteq15np_prompt_Qs40_times_1.84.dat",
         "PbPb_LHC2760":"fit_by_hand/PbPb_2760GeV_ncteq15np_prompt_Qs80_times_1.23.dat",
         "PbPb_LHC5020":"fit_by_hand/PbPb_5020GeV_ncteq15np_prompt_Qs80_times_1.17.dat",
-        "pPb_LHC5020":"fit_by_hand/pPb_LHC_5020GeV_from_pPb_paper.dat"
+        "pPb_LHC5020":"fit_by_hand/pPb_LHC_5020GeV_from_pPb_paper.dat",
+        "pp_LHC5020":"fit_by_hand/pp_from_old_fit_from_pPb_paper.dat"
     }
 
     font = {'family' : 'URW Gothic',
@@ -309,6 +310,10 @@ for system, system_tmp_dict in calc_dict.items():
     if system in hand_fit_dict.keys():
         pT_hand_fit, dN_hand_fit=np.loadtxt(hand_fit_dict[system]).T
         plt.plot(pT_hand_fit, dN_hand_fit, ':', color='black', label="Older hand-fitted extrapolation")
+
+    # Plot data in the p+p case
+    #if (system == "pp_photon_NLO_LHC5020_ncteq15np"):
+        
 
     # Show the region between p_T=0 and p_T=4 GeV, which is apparently not the most trustworthy region of p_T for pQCD calculations
     plt.axvspan(0, 4, alpha=0.5, color='grey')
