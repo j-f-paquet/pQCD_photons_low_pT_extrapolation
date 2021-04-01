@@ -13,7 +13,7 @@ base_directory=os.path.dirname(os.path.realpath(__file__))
 # Load all calculations
 # Find which systems first
 system_pre_filelist=os.listdir(path=base_directory)
-subdir_regex = re.compile('([A-Za-z]+)_photon_NLO_([A-Za-z]+)([0-9]+)_ncteq15np')
+subdir_regex = re.compile('([A-Za-z]+)_photon_NLO_([A-Za-z]+)([0-9]+)_ncteq15np(.*)')
 
 calc_dict={}
 for tmp_file in system_pre_filelist:
@@ -23,7 +23,8 @@ for tmp_file in system_pre_filelist:
         nuclei_pair=match.group(1)
         system=match.group(2)
         sqrts_GeV=match.group(3)
-        calc_dict[nuclei_pair+"_"+system+sqrts_GeV]={'dirname':tmp_file,'sqrts_GeV':float(sqrts_GeV)}
+        extra_label=match.group(4)
+        calc_dict[nuclei_pair+"_"+system+sqrts_GeV+extra_label]={'dirname':tmp_file,'sqrts_GeV':float(sqrts_GeV)}
 
 # Loop over systems
 for system, system_tmp_dict in calc_dict.items():
@@ -97,6 +98,8 @@ norm_dict={}
 # Loop over systems
 for system, system_tmp_dict in calc_dict.items():
 
+#    print("Preparing ", system)
+
     norm_dict[system]={}
 
     tmp_calc_dict=calc_dict[system]['calcs']
@@ -116,6 +119,8 @@ for system, system_tmp_dict in calc_dict.items():
             # Loop over scales
             for n, (scale, calc_at_scale) in enumerate(tmp_calc_dict.items()):
 
+#                print("Doing scale",scale)
+
                 pT, dNdpt = np.transpose(calc_at_scale)
 
                 ratio=dNdpt/dNdpt_ref
@@ -124,7 +129,7 @@ for system, system_tmp_dict in calc_dict.items():
                 norm_dict[system][low_pT_cut_for_fit][high_pT_cut_for_fit][scale]=tmp_res
 
 
-plot_this=False
+plot_this=True
 
 if (plot_this):
 
@@ -279,7 +284,8 @@ for system, system_tmp_dict in calc_dict.items():
         "PbPb_LHC2760":"fit_by_hand/PbPb_2760GeV_ncteq15np_prompt_Qs80_times_1.23.dat",
         "PbPb_LHC5020":"fit_by_hand/PbPb_5020GeV_ncteq15np_prompt_Qs80_times_1.17.dat",
         "pPb_LHC5020":"fit_by_hand/pPb_LHC_5020GeV_from_pPb_paper.dat",
-        "pp_LHC5020":"fit_by_hand/pp_from_old_fit_from_pPb_paper.dat"
+        "pp_LHC5020":"fit_by_hand/pp_sqrts5020_from_old_fit_from_pPb_paper.dat",
+        "pp_RHIC200":"fit_by_hand/pp_sqrts200_from_old_fit_from_pPb_paper.dat"
     }
 
     font = {'family' : 'URW Gothic',

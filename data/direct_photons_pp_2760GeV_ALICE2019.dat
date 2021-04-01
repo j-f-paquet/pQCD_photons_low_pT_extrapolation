@@ -1,0 +1,54 @@
+#https://inspirehep.net/literature/1664312
+#https://arxiv.org/abs/1803.09857
+#: table_doi: 10.17182/hepdata.88395.v1/t5
+#: name: Table 5
+#: description: Invariant differential cross section of direct GAMMA produced in inelastic pp collisions at center-of-mass energy 2.76 TeV, the uncertainty of $\sigma_{MB}$ of 2.5% is not included in the systematic error. Values are given in the center of the PT bin.
+#: data_file: data5.yaml
+#: data_license:   
+#: keyword reactions: P P --> GAMMA X
+#: keyword observables: E*D3SIG/D3P
+#: keyword phrases: 
+#: keyword cmenergies: 2760.0-8000.0
+#: RE,P P --> GAMMA X
+#: YRAP,-0.9 TO 0.9
+#: SQRT(S) [GEV],2760.0
+#PT [GEV/c],E d**3sigma/dp**3 [(pb GEV**-2 c**3)],stat +,stat -,sys +,sys -
+#0.4 0.6 7.68e+09 0 0 0 0
+#0.6 0.8 9.22e+08 0 0 0 0
+#0.8 1.0 3.82e+08 0 0 0 0
+#1.0 1.2 1.46e+08 0 0 0 0
+#1.2 1.4 4.37e+07 0 0 0 0
+#1.4 1.6 1.60e+07 0 0 0 0
+#1.6 1.8 1.10e+07 0 0 0 0
+#1.8 2.0 6.72e+06 0 0 0 0
+#2.0 2.2 5.25e+06 0 0 0 0
+#2.2 2.4 3.04e+06 0 0 0 0
+#2.4 2.6 1.26e+06 0 0 0 0
+#2.6 3.0 8.21e+05 0 0 0 0
+#3.0 3.5 5.98e+05 0 0 0 0
+#3.5 4.0 1.79e+05 0 0 0 0
+#4.0 5.0 9.85e+04 0 0 0 0
+#5.0 6.0 3.69e+04 0 0 0 0
+#6.0 8.0 5.06e+03 3.03e+03 -3.03e+03 3.062e+03 -3.062e+03
+#8.0 10.0 2.92e+03 0 0 0 0
+# need to reformat since almost all of these are upper bounds...
+#pT average      val     val-uncert      val+uncert
+5.00E-01        0       0       7.68E+09
+7.00E-01        0       0       9.22E+08
+9.00E-01        0       0       3.82E+08
+1.10E+00        0       0       1.46E+08
+1.30E+00        0       0       4.37E+07
+1.50E+00        0       0       1.60E+07
+1.70E+00        0       0       1.10E+07
+1.90E+00        0       0       6.72E+06
+2.10E+00        0       0       5.25E+06
+2.30E+00        0       0       3.04E+06
+2.50E+00        0       0       1.26E+06
+2.80E+00        0       0       8.21E+05
+3.25E+00        0       0       5.98E+05
+3.75E+00        0       0       1.79E+05
+4.50E+00        0       0       9.85E+04
+5.50E+00        0       0       3.69E+04
+7.00E+00        5.06E+03        0.00E+00        1.12E+04
+9.00E+00        0       0       2.92E+03
+

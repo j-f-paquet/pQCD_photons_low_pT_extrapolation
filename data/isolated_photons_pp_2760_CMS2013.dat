@@ -1,0 +1,18 @@
+#: table_doi: 10.17182/hepdata.58979.v1/t3
+#: name: Table 3
+#: description: Isolated photon spectra for P P collisions.
+
+#: data_file: Table3.yaml
+#: keyword reactions: P P --> GAMMA X
+#: keyword observables: DN/DET
+#: keyword phrases: Inclusive | Single Differential Distribution | Proton-Proton Scattering
+#: keyword cmenergies: 2760.0
+#: ABS(ETARAP),,,< 1.44
+#: RE,,,P P --> GAMMA X
+#: SQRT(S) [GeV],,,2760.0
+#ET(P=3) [GEV],ET(P=3) [GEV] LOW,ET(P=3) [GEV] HIGH,D(N)/DET [PB/GEV],stat +,stat -,sys +,sys -
+22.3 20.0 25.0 2400.0 140.0 -140.0 400.0 -400.0
+27.3 25.0 30.0 983.0 74.0 -74.0 160.0 -160.0
+34.4 30.0 40.0 305.0 30.0 -30.0 45.0 -45.0
+44.5 40.0 50.0 102.0 12.0 -12.0 15.0 -15.0
+61.7 50.0 80.0 20.1 2.6 -2.6 2.8 -2.8
