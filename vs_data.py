@@ -23,13 +23,13 @@ plt.rc('font', **font)
 ##############################
 
 # Plot
-plt.figure()
-plt.title("p-p 200 GeV")
+fig = plt.figure()
+#plt.title("p-p 200 GeV")
 plt.xscale('linear')
-plt.xlim(0,25.)
-plt.ylim(1e-11,1e1)
-plt.xlabel(r'$p_T^\gamma$')
-plt.ylabel(r'$d\sigma_{\gamma}/dy dp_T^\gamma$')
+plt.xlim(0,20.)
+plt.ylim(1e-11,1e-1)
+plt.xlabel(r'$p_T^\gamma$ (GeV)')
+plt.ylabel(r'$d\sigma_{\gamma}/dy p_T^\gamma dp_T^\gamma$ (mb GeV$^{-2}$)')
 plt.yscale('log')
 
 # Plot phenix data
@@ -37,14 +37,16 @@ plt.yscale('log')
 #mb GeV$^-2$
 filename=os.path.join("data","direct_photons_pp_200GeV_PHENIX2012.dat")
 pT, dN, dy_stat, dy_syst = np.loadtxt(filename).T
-plt.errorbar(pT,dN,yerr=np.sqrt(dy_stat*dy_stat+dy_syst*dy_syst),fmt="^", color='purple',capsize=4, label="PHENIX 2012") #, barsabove=True)
+plt.errorbar(pT,dN,yerr=np.sqrt(dy_stat*dy_stat+dy_syst*dy_syst),fmt="^", color='purple',capsize=4, label="PHENIX") #, barsabove=True)
 
 #pb GeV*-2
 pT, dNdpt = np.loadtxt("./pQCD_low_pT_extrapol_pp_RHIC200.txt").T
         
-plt.plot(pT, dNdpt*1e-9, color='blue',label="pQCD")
+plt.plot(pT, dNdpt*1e-9, color='blue',label="Collinear-based pQCD")
 
-plt.legend(loc='upper right',fontsize=10)
+plt.text(0.55, .55, "p+p\n"r"$\sqrt{s_{NN}}=200$ GeV",  ha='left', va='top', transform=plt.axes().transAxes, fontsize=14)
+
+plt.legend(loc='upper right')
 plt.tight_layout()
 
 output_filename="vs_data_pp_RHIC200.pdf"
@@ -81,8 +83,8 @@ rapidity_range=2*1.44
 pTmin, pTmax, pT, dN, dN_err_stat_plus, dN_err_stat_minus, dN_err_syst_plus, dN_err_syst_minus = np.loadtxt(filename).T
 norm=1e-9/(2.*np.pi*rapidity_range*pT)
 plt.errorbar(pT,dN*norm,yerr=[norm*np.sqrt(dN_err_stat_minus**2+dN_err_syst_minus**2),norm*np.sqrt(dN_err_stat_plus**2+dN_err_syst_plus**2)],fmt="^", color='purple',capsize=4, label="ALICE 2019") #, barsabove=True)
-print([norm*np.sqrt(dN_err_stat_minus**2+dN_err_syst_minus**2),norm*np.sqrt(dN_err_stat_plus**2+dN_err_syst_plus**2)])
-print(norm*dN)
+#print([norm*np.sqrt(dN_err_stat_minus**2+dN_err_syst_minus**2),norm*np.sqrt(dN_err_stat_plus**2+dN_err_syst_plus**2)])
+#print(norm*dN)
 
 #pb GeV*-2
 pT, dNdpt = np.loadtxt("./pQCD_low_pT_extrapol_pp_LHC2760.txt").T
