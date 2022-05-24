@@ -1,0 +1,34 @@
+'pp_photon_NLO_RHIC39_ncteq15np/'     path for outputs
+0		projectile type h1:0 proton, 1 anti-proton, 3 nucleus 4pi+,5 pi-
+1.D0		Z of nuclei (used only when ih=3)
+1.D0		A of nuclei (used only when ih=3)
+1		pdflib(hadron h1): ntype (1 proton/nucleus; 2 pion)
+2		pdflib(hadron h1): ngroup (1=CTEQ6m, 2=nCTEQ15np_1_1, 3=nCTEQ15np_14_7, 4=nCTEQ15np_131_54, 5=nCTEQ15np_197_79, 6=nCTEQ15np_208_82)
+1		pdflib(hadron h1): nset  ()
+0		type of target h2:0 proton, 3 nucleus
+1.D0		Z of nuclei (used only when ih=3)
+1.D0		A of nuclei (used only when ih=3)
+1		pdflib(hadron h2): ntype
+2		pdflib(hadron h1): ngroup (1=CTEQ6m, 2=nCTEQ15np_1_1, 3=nCTEQ15np_14_7, 4=nCTEQ15np_131_54, 5=nCTEQ15np_197_79, 6=nCTEQ15np_208_82)
+1		pdflib(hadron h2): nset
+0		0 photon, 1 (pi^+ + pi^-)/2, 2 (K^+ + K^-)/2,3 (K^0 + K^0_bar)/2, 5 pi^0, 7 h^+ + h^-
+3               0 BORN, 1 +anoma, 2 +nll direct, 3 +nll fragmentation (LHIOR), 4 NLL hadron
+2		1 LL, 2 NLL in PIOINCL calculation(IHIOR)
+2               fragmentation function set BFG 1(2) small(large) gluon (ianord), hadron Bkk 1, KKP 2, BFGW 3
+4		nb of active flavours (can be only 4 for photon production)
+2               isigm=1,DSIGMA/DY/DPT2;=2, E*DSIGMA/D3P;=3, DSIGMA/DY/DPT
+.38935D+9		value of (hbar*c)^2
+2		nb of loop in alpha_s:1 LO, 2 NLO (ILOOP)
+2		factorisation scheme:2 MSBAR, 3 DIS
+0		0 collider mode, 1 fixed target mode
+39.D0		value of ebeam or sqrt(s) depending on the preceeding flag
+0.12D0		value of ymax
+-0.12D0		value of ymin
+.true.          .false., cross-section at (ymax-ymin)/2.;.true. integrated in y
+1		nb of pt points
+1.0D1		pt value for point 20
+1		choice of the scale:1 pt*c 
+0.5D0		value of c for initial state factorisation scale
+0.5D0		value of c for renormalisation scale
+0.5D0		value of c for final state factorisation scale
+'lhc'		flag to choose which experiment you want 
