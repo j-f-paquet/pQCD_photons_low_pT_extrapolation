@@ -1,0 +1,33 @@
+##################################################
+##################################################
+### Physics basis behind low p_T extrapolation ###
+##################################################
+##################################################
+#
+#
+# We look at inclusive high-pT single-particle cross-section in collinear-based pQCD
+# dsigma(p_T, norm) = f(x_a, Q_fac) X f(x_b, Q_fac) X dsigma_parton(x_a,x_b,x_c,x_d, Q_ren) X D(z_c, Q_frag)
+# where "norm" is defined by the way we set the factorization/renormalization/fragmentation scales equal:
+# Q_fac=Q_ren=Q_frag=norm*p_T,
+# We observe that the ratio of dsigma(p_T,norm1)/dsigma(p_T,norm2) is approximately a constant
+# That is, changing the scales by a constant results mostly in a normalization change of dsigma(p_T,norm)
+#
+# See prompt_photons_at_low_pt_PhD_Paquet.pdf for more physics background
+#
+# Note: evidently this extrapolation is a coarse approximation that cannot replace the inclusion
+#       of important physics, such as the change of number of active quarks at lower p_T,
+#       high-order corrections or non-perturbative effects,
+#       as well as parton interactions with the plasma in heavy ion collisions
+
+
+##############################
+### Find the normalization ###
+##############################
+
+# One challenge is that the normalization isn't quite constant
+# One needs to make a choice as to exactly what normalization to use
+# This part of the code looks at the normalization averaged over different ranges of p_T,
+# and outputs some information on how much the normalization depends on the p_T cuts
+#
+# There's no strict way to chose the p_T range of the fit (that is, to choose the normalization)
+# but the uncertainty of picking different p_T range seems acceptable
