@@ -87,12 +87,12 @@ for system, system_tmp_dict in calc_dict.items():
 # but the uncertainty of picking different p_T range seems acceptable
 
 chosen_low_pT_cut_for_fit=4
-chosen_high_pT_cut_for_fit=25
+chosen_high_pT_cut_for_fit=6
 
 
 # In GeV
-low_pT_cut_for_fit_list=[4,6,8,10,12]
-high_pT_cut_for_fit_list=[15,20,25,30, 50]
+low_pT_cut_for_fit_list=[4,5]
+high_pT_cut_for_fit_list=[6,7]
 
 norm_dict={}
 
@@ -103,8 +103,6 @@ for system, system_tmp_dict in calc_dict.items():
 
     sqrts_GeV=system_tmp_dict['sqrts_GeV']
     print(sqrts_GeV)
-    if (sqrts_GeV < 40):
-        continue
 
     norm_dict[system]={}
 
@@ -141,10 +139,6 @@ if (plot_this):
 
     # Check how much the normalization depends on the range of p_T
     for system, system_tmp_dict in calc_dict.items():
-
-        sqrts_GeV=system_tmp_dict['sqrts_GeV']
-        if (sqrts_GeV < 40):
-            continue
 
         # Plot
         plt.figure()
@@ -260,7 +254,7 @@ if (plot_this):
                 if (normalize_calc):
                     normalize_label="normalized_"
 
-                output_filename="dNdpT_prompt_photons_"+ratio_label+normalize_label+system+".pdf"
+                output_filename="dNdpT_prompt_photons_"+ratio_label+normalize_label+system+"_low_range_fit.pdf"
 
                 plt.savefig(output_filename)
                 plt.show()
@@ -274,10 +268,6 @@ scale_to_output='4.0'
 
 for system, system_tmp_dict in calc_dict.items():
 
-    sqrts_GeV=system_tmp_dict['sqrts_GeV']
-    if (sqrts_GeV < 40):
-        continue
-
     # Get the info I need
     calcs_dict=system_tmp_dict['calcs']
 
@@ -287,7 +277,7 @@ for system, system_tmp_dict in calc_dict.items():
     dNdpt*=norm_dict[system][chosen_low_pT_cut_for_fit][chosen_high_pT_cut_for_fit][scale_to_output]
 
     # Save to file
-    np.savetxt("pQCD_low_pT_extrapol_"+system+".txt",np.transpose([pT,dNdpt]))
+    np.savetxt("pQCD_low_pT_extrapol_"+system+"_low_range_fit.txt",np.transpose([pT,dNdpt]))
 
 
     # Compare with raw calculations at Qs=p_T/2 as final validation
@@ -342,5 +332,5 @@ for system, system_tmp_dict in calc_dict.items():
     plt.legend(loc='upper right',fontsize=10)
     plt.tight_layout()
 
-    plt.savefig("validation_pQCD_low_pT_extrapol_"+system+".pdf")
+    plt.savefig("validation_pQCD_low_pT_extrapol_"+system+"_low_range_fit.pdf")
     plt.show()
