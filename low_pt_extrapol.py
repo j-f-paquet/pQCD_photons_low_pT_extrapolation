@@ -294,6 +294,7 @@ for system, system_tmp_dict in calc_dict.items():
 
     # Also compare with old fits I made by hand
     hand_fit_dict={
+        "AuAu_RHIC62.4":"fit_by_hand/2018_04_fits_bes/AuAu_prompt_photons_62.4GeV.dat",
         "AuAu_RHIC200":"fit_by_hand/AuAu200_ncteq15np_prompt_Qs40_times_1.84.dat",
         "PbPb_LHC2760":"fit_by_hand/PbPb_2760GeV_ncteq15np_prompt_Qs80_times_1.23.dat",
         "PbPb_LHC5020":"fit_by_hand/PbPb_5020GeV_ncteq15np_prompt_Qs80_times_1.17.dat",

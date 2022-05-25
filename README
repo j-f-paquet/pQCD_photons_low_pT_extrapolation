@@ -31,3 +31,8 @@
 #
 # There's no strict way to chose the p_T range of the fit (that is, to choose the normalization)
 # but the uncertainty of picking different p_T range seems acceptable
+#
+# By default, the script "low_pt_extrapol.py" fits the normalization by comparing the spectra between p_T of 4 and 25 GeV. Those files are named "pQCD_low_pT_extrapol_[system].txt".
+#
+# That doesn't work for lower center-of-mass energy collisions, which can only produce photons of energy smaller than half the center-of-mass energy. In those cases [sqrt(s_NN)=19.6, 39 and 62.4 GeV], we fit the normalization between p_T of 4 and 6 GeV. Those files are named "pQCD_low_pT_extrapol_[system]_low_range_fit.txt". For high center-of-mass energies, there is no significant differences between the two extrapolations.
+# Beware that, however accurate or inaccurate is the low-p_T extrapolation used here, it only gets worse at low center-of-mass energy.
