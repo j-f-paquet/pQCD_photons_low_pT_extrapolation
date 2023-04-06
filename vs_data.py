@@ -37,14 +37,15 @@ plt.yscale('log')
 #mb GeV$^-2$
 filename=os.path.join("data","direct_photons_pp_200GeV_PHENIX2012.dat")
 pT, dN, dy_stat, dy_syst = np.loadtxt(filename).T
-plt.errorbar(pT,dN,yerr=np.sqrt(dy_stat*dy_stat+dy_syst*dy_syst),fmt="^", color='purple',capsize=4, label="PHENIX") #, barsabove=True)
+plt.errorbar(pT,dN,yerr=np.sqrt(dy_stat*dy_stat+dy_syst*dy_syst),fmt="^", color='purple',capsize=4, label="PHENIX (2013)") #, barsabove=True)
 
 #pb GeV*-2
 pT, dNdpt = np.loadtxt("./pQCD_low_pT_extrapol_pp_RHIC200.txt").T
         
 plt.plot(pT, dNdpt*1e-9, color='blue',label="Collinear-based pQCD")
 
-plt.text(0.55, .55, "p+p\n"r"$\sqrt{s_{NN}}=200$ GeV",  ha='left', va='top', transform=plt.axes().transAxes, fontsize=14)
+#plt.text(0.55, .55, "p+p\n"r"$\sqrt{s_{NN}}=200$ GeV",  ha='left', va='top', transform=plt.axes().transAxes, fontsize=14)
+plt.text(10., 1e-5, "p+p\n"r"$\sqrt{s_{NN}}=200$ GeV",  ha='left', va='top', fontsize=14)
 
 plt.legend(loc='upper right')
 plt.tight_layout()
@@ -82,7 +83,7 @@ filename=os.path.join("data","isolated_photons_pp_2760_CMS2013.dat")
 rapidity_range=2*1.44
 pTmin, pTmax, pT, dN, dN_err_stat_plus, dN_err_stat_minus, dN_err_syst_plus, dN_err_syst_minus = np.loadtxt(filename).T
 norm=1e-9/(2.*np.pi*rapidity_range*pT)
-plt.errorbar(pT,dN*norm,yerr=[norm*np.sqrt(dN_err_stat_minus**2+dN_err_syst_minus**2),norm*np.sqrt(dN_err_stat_plus**2+dN_err_syst_plus**2)],fmt="^", color='purple',capsize=4, label="ALICE 2019") #, barsabove=True)
+plt.errorbar(pT,dN*norm,yerr=[norm*np.sqrt(dN_err_stat_minus**2+dN_err_syst_minus**2),norm*np.sqrt(dN_err_stat_plus**2+dN_err_syst_plus**2)],fmt="o", color='darkgreen',capsize=4, label="CMS 2013") #, barsabove=True)
 #print([norm*np.sqrt(dN_err_stat_minus**2+dN_err_syst_minus**2),norm*np.sqrt(dN_err_stat_plus**2+dN_err_syst_plus**2)])
 #print(norm*dN)
 
