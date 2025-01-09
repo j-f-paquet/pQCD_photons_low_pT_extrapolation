@@ -104,6 +104,7 @@ for system, system_tmp_dict in calc_dict.items():
     sqrts_GeV=system_tmp_dict['sqrts_GeV']
     print(sqrts_GeV)
     if (sqrts_GeV < 40):
+        print("Skipping ", system," because its energy is too low")
         continue
 
     norm_dict[system]={}
