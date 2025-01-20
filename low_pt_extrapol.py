@@ -43,10 +43,15 @@ for system, system_tmp_dict in calc_dict.items():
         match=subdir_regex.match(tmp_file)
 
         if (match != None):
-            scale_val=match.group(1)
-            tmp_data=np.genfromtxt(os.path.join(base_directory,dirname,tmp_file))
-            calc_dict[system]['calcs'][scale_val]=tmp_data[:,(0,1)]
+            scale_val = match.group(1)
+            tmp_data = np.genfromtxt(os.path.join(base_directory, dirname, tmp_file))
+            calc_dict[system]['calcs'][scale_val] = np.column_stack((
+                                tmp_data[:, 0],  # pT
+                                tmp_data[:, 1],  # dNdpT
+                                tmp_data[:, 3] + tmp_data[:, 6]  # dNdpT_LO
+                                ))
             scale_list.append(scale_val)
+
 
     calc_dict[system]['scale_list']=scale_list
 
@@ -121,14 +126,14 @@ for system, system_tmp_dict in calc_dict.items():
             norm_dict[system][low_pT_cut_for_fit][high_pT_cut_for_fit]={}
 
             # Normalization calculated in comparison with this calculation
-            pT_ref, dNdpt_ref = np.transpose(tmp_calc_dict['0.5'])
+            pT_ref, dNdpt_ref, dNdpt_LO_ref = np.transpose(tmp_calc_dict['0.5'])
 
             # Loop over scales
             for n, (scale, calc_at_scale) in enumerate(tmp_calc_dict.items()):
 
 #                print("Doing scale",scale)
 
-                pT, dNdpt = np.transpose(calc_at_scale)
+                pT, dNdpt, dNdpt_LO = np.transpose(calc_at_scale)
 
                 ratio=dNdpt/dNdpt_ref
                 spl = UnivariateSpline(pT, ratio,k=1)
@@ -204,7 +209,7 @@ if (plot_this):
                 calcs_dict=system_tmp_dict['calcs']
 
                 # If a ratio is taken, this is the denominator
-                pT_ref, dNdpt_ref = np.transpose(calcs_dict['0.5'])
+                pT_ref, dNdpt_ref, dNdpt_LO_ref = np.transpose(calcs_dict['0.5'])
                 spl_ref_pre = UnivariateSpline(pT_ref, np.log(dNdpt_ref), k=1, ext='raise')
                 spl_ref = lambda pT : np.exp(spl_ref_pre(pT))
 
@@ -236,7 +241,7 @@ if (plot_this):
 
                 for n, (scale, calc_at_scale) in enumerate(calcs_dict.items()):
 
-                    pT, dNdpt = np.transpose(calc_at_scale)
+                    pT, dNdpt, dNdpt_LO = np.transpose(calc_at_scale)
 
                     if (plot_ratio):
                         y=dNdpt/dNdpt_ref
@@ -279,16 +284,57 @@ for system, system_tmp_dict in calc_dict.items():
     if (sqrts_GeV < 40):
         continue
 
+    #if (system != "AuAu_RHIC200"):
+    #    continue
+
     # Get the info I need
     calcs_dict=system_tmp_dict['calcs']
 
     #
-    pT, dNdpt = np.transpose(calcs_dict[scale_to_output])
+    pT, dNdpt, dNdpt_LO = np.transpose(calcs_dict[scale_to_output])
+    pT_Qs05, dNdpt_Qs05, dNdpt_LO_Qs05 = np.transpose(calcs_dict['0.5'])
+    pT_Qs2, dNdpt_Qs2, dNdpt_LO_Qs2 = np.transpose(calcs_dict['2.0'])
 
     dNdpt*=norm_dict[system][chosen_low_pT_cut_for_fit][chosen_high_pT_cut_for_fit][scale_to_output]
 
+    ###########################################
+    ##### Try to estimate the uncertainty #####
+    ###########################################
+    # First estimate the scale uncertainty
+    # Calculate relative scale uncertainty array
+    relative_scale_uncertainty = (dNdpt_Qs05 / dNdpt_Qs2)
+    # If p_T's are too low, that scale uncertainty isn't reliable, so I replace it by an average value taken from higher p_T's
+    mask_replace = (pT_Qs05 >= 4) & (pT_Qs05 < 10.)
+    replacement_value = np.mean(relative_scale_uncertainty[mask_replace])
+    relative_scale_uncertainty[pT_Qs05 < 4] = replacement_value
+
+    # The (NLO+LO)/LO ratio doesn't seem to be correlated with the pT regions where I wouldn't trust the calculations.
+    # Not used at the moment
+    # ratio_NLO_LO = dNdpt / dNdpt_LO
+    # Normalize the ratio by its minimum value
+    # normalized_ratio_NLO_LO = ratio_NLO_LO / np.min(ratio_NLO_LO)
+
+    # Estimated relative scale uncertainty
+    #estimated_rel_uncert=np.multiply(relative_scale_uncertainty,normalized_ratio_NLO_LO)
+    estimated_rel_uncert=relative_scale_uncertainty
+    #print(relative_scale_uncertainty)
+    #print(dNdpt_Qs05)
+    #print(dNdpt_Qs2)
+    
+    # We expect that the current calculations have corrections of order of $\Lambda_QCD/Q$ (to some power) 
+    # We add an additional roughly estimated uncertainty based on that
+    lambda_qcd_in_GeV=.2
+    lambda_over_pT=lambda_qcd_in_GeV/pT
+    # Correction factor determined by assuming that the uncertainty should be doubled for pT=1 GeV (LambdaQCD/pT=0.2).
+    # Evidently, this is a rough estimate
+    estimated_lambda_over_pT_coefficient=5. 
+    estimated_rel_uncert*=(1+estimated_lambda_over_pT_coefficient*lambda_over_pT)
+    
+    dNdpt_estimated_uncert_lower=dNdpt/estimated_rel_uncert
+    dNdpt_estimated_uncert_higher=dNdpt*estimated_rel_uncert
+
     # Save to file
-    np.savetxt("pQCD_low_pT_extrapol_"+system+".txt",np.transpose([pT,dNdpt]))
+    np.savetxt("pQCD_low_pT_extrapol_"+system+".txt",np.transpose([pT,dNdpt,dNdpt_estimated_uncert_lower,dNdpt_estimated_uncert_higher]))
 
 
     # Compare with raw calculations at Qs=p_T/2 as final validation
@@ -314,19 +360,44 @@ for system, system_tmp_dict in calc_dict.items():
     plt.figure()
     plt.title(system)
     plt.xscale('log')
+
+    # Set the scale
+    def get_max_pT_scale(sqrts):
+        if abs(sqrts - 200) < 1e-9:
+            return 20
+        elif sqrts > 1000:
+            return 100
+        elif sqrts < 10:
+            return 5
+        else:
+            return np.max([0.2/2.*sqrts,5])
+    
     x_low=0.5
-    x_high=100
+    x_high=get_max_pT_scale(float(sqrts_GeV))
     plt.xlim(x_low,x_high)
+
+    # Adjust the y scale accordingly
+    mask_select = (pT < x_high)
+    y_min = np.min(dNdpt[mask_select])
+    y_max = np.max(dNdpt[mask_select])
+    y_min_padded = y_min * 0.9
+    y_max_padded = y_max * 1.1
+    plt.yscale('log')
+    plt.ylim(y_min_padded, y_max_padded)
+
     plt.xlabel(r'$p_T^\gamma$')
     plt.ylabel(r'$dN_{\gamma}/dy dp_T^\gamma$')
-    plt.yscale('log')
 
     # Plot original Qs=pT/2 calculations
-    pT_Qs05, dNdpt_Qs05 = np.transpose(calcs_dict['0.5'])
     plt.plot(pT_Qs05, dNdpt_Qs05, 'rD', label="Qs=p_T/2")
+
 
     # Plot extrapolated
     plt.plot(pT, dNdpt, '-', color='blue', label="Extrapolated")
+    plt.fill_between(pT,
+                 dNdpt_estimated_uncert_lower,
+                 dNdpt_estimated_uncert_higher,
+                 color='blue', alpha=0.3)
 
     # Plot old hand-fit when available
     if system in hand_fit_dict.keys():
