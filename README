@@ -1,3 +1,9 @@
+# The first column is the photon transverse momentum in GeV
+# The second column is 1/(2 pi p_T) dsigma/dp_T (GeV^-2 pb) at rapidity=0, normalised at high p_T to match result computed with factorisation/renormalisation/fragmentation scale=p_T/2
+# The third and fourth columns are the same quantity as the second one, except they are the lower and upper end of a band that represents an estimate of the uncertainty
+# See below for details
+
+
 ##################################################
 ##################################################
 ### Physics basis behind low p_T extrapolation ###
@@ -36,3 +42,19 @@
 #
 # That doesn't work for lower center-of-mass energy collisions, which can only produce photons of energy smaller than half the center-of-mass energy. In those cases [sqrt(s_NN)=19.6, 39 and 62.4 GeV], we fit the normalization between p_T of 4 and 6 GeV. Those files are named "pQCD_low_pT_extrapol_[system]_low_range_fit.txt". For high center-of-mass energies, there is no significant differences between the two extrapolations.
 # Beware that, however accurate or inaccurate is the low-p_T extrapolation used here, it only gets worse at low center-of-mass energy.
+
+##################################
+### Estimating the uncertainty ###
+##################################
+
+# There are three rough metrics for the uncertainty:
+# - Changing the factorization/fragmentation/renormalization scales "Q" should give a sense of the uncertainty;
+# - We expect the calculation to have corrections of order of $\Lambda_{QCD}/p_T$ to some power, where $p_T$ is the photon transverse momentum
+# - I thought the ratio of the NLO result over the LO result would also be a useful metric, but I didn't find it to be in the end.
+#
+# The approach that I used is
+# 1) Calculate the scale uncertainty as a baseline uncertainty
+# 2) Multiply the scale uncertainty (which is mildly p_T dependent) by a function (1+coeff*LambdaQCD/p_T), where after some trial and error, I settled on coeff=5
+#    (meaning that at p_T=1, the scale uncertainty is doubled to get a conservative estimate of the total uncertainty)
+#
+# Evidently, this is a very rough estimate. 
